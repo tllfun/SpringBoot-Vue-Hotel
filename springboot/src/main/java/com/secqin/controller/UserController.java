@@ -28,4 +28,10 @@ public class UserController {
         Page<User> userPage = userMapper.selectPage(new Page<>(1, 1), Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         return Result.succes(userPage);
     }
+
+    @PutMapping
+    public Result<?> update(@RequestBody User user) {
+        userMapper.updateById(user);
+        return Result.succes();
+    }
 }
