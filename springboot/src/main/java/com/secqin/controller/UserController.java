@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/list")
     public Result<?> getAll() {
-        Page<User> userPage = userMapper.selectPage(new Page<>(1, 1000), Wrappers.<User>lambdaQuery().like(User::getUsername, ""));
+        Page<User> userPage = userMapper.selectPage(new Page<>(1, 1000), Wrappers.<User>lambdaQuery().ne(User::getId, 0));
         return Result.succes(userPage);
     }
 
