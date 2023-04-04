@@ -3,6 +3,9 @@
     <p style="display: inline;margin-left: 20px;float: left;color: white">
       <router-link to="/booking" style="color: white">预订</router-link>
     </p>
+    <p style="display: inline;margin-left: 20px;float: left;color: white">
+      <router-link to="/admin/" style="color: white">管理</router-link>
+    </p>
     <p style="display: inline;margin-left: 20px;float: left;color: white">加入我们</p>
     <p style="display: inline;margin-left: 20px;float: left;color: white">成为赞助商</p>
     <p style="margin-left: 20px;float: left;color: white">联系酒店</p>
@@ -26,5 +29,11 @@ export default {
   .el-menu-demo{
     margin-top: 370px;
     float: bottom;
+  }
+  a {
+    text-decoration: none;
+  }
+  .router-link-active {
+    text-decoration: none;
   }
 </style>

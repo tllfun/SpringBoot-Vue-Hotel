@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import booking from "@/views/booking.vue";
 import AdminWelcome from "@/views/admin/welcome.vue"
-import Housekeeping from "@/views/admin/housekeeping.vue";
 
 
 const routes = [
@@ -24,6 +23,10 @@ const routes = [
       {
         path:'/admin/housekeeping',
         component:()=>import('../views/admin/housekeeping.vue'),
+      },
+      {
+        path:'/admin/newroom',
+        component:()=>import('../views/admin/newroom.vue'),
       },
     ]
   },

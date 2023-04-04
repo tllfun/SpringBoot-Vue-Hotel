@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="background-color: #CCCCCC">
     <div class="box">
       <el-container>
         <el-header class="header">
@@ -26,7 +26,7 @@
                   <span>客房管理</span>
                 </template>
                 <el-menu-item index="/admin/housekeeping">客房管理</el-menu-item>
-                <el-menu-item index="2-2">新增客房</el-menu-item>
+                <el-menu-item index="/admin/newroom">新增客房</el-menu-item>
               </el-sub-menu>
               <el-menu-item index="3">
                 <el-icon><Menu /></el-icon>
@@ -76,7 +76,7 @@ export default {
   }
   .el-footer {
     display: flex;
-    height: 70px;
+    height: 50px;
     width: 100%;
     align-items: center;
   }
