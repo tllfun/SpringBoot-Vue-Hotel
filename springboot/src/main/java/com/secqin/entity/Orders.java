@@ -6,20 +6,20 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@TableName("Order")
+@TableName("Orders")
 @Data
-public class Order {
+public class Orders {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private Integer user;
-    private Integer manager;
+    private Integer userId;
+    private Integer managerId;
     private Integer room;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private LocalDateTime inTime;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private LocalDateTime outTime;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    @TableField(fill = FieldFill.INSERT_UPDATE)
-//    private LocalDateTime lastUpdateTime;
-//    private String comment;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime inTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime outTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+    private String comments;
 }
