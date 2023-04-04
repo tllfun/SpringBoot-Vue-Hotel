@@ -27,7 +27,19 @@
       <el-table-column fixed="right" label="操作" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="handleClick">修改</el-button>
-          <el-button link type="primary" size="small">删除</el-button>
+          <el-popconfirm
+              confirm-button-text="Yes"
+              cancel-button-text="No"
+              :icon="InfoFilled"
+              icon-color="#626AEF"
+              title="Are you sure to delete this?"
+              @confirm="confirmEvent"
+              @cancel="cancelEvent"
+          >
+            <template #reference>
+              <el-button link type="primary" size="small">删除</el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
