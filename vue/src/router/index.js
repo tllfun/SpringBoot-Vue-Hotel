@@ -28,7 +28,12 @@ const routes = [
         path:'/admin/newroom',
         component:()=>import('../views/admin/newroom.vue'),
       },
-    ]
+      {
+        path:'/admin/theWelcome',
+        component:()=>import('../views/admin/the-welcome.vue'),
+      },
+    ],
+    redirect:'/admin/theWelcome'
   },
   {
     path: '/about',

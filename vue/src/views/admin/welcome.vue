@@ -16,7 +16,7 @@
                      @open="handleOpen"
                      @close="handleClose"
             >
-              <el-menu-item index="/admin/">
+              <el-menu-item index="/admin/theWelcome">
                 <el-icon><House /></el-icon>
                 <span>首页</span>
               </el-menu-item>
