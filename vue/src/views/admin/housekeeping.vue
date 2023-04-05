@@ -17,13 +17,16 @@
         </template>
       </el-input>
     </div>
-    <el-table :data="tableData" style="width: 100%;height: 93%">
-      <el-table-column fixed prop="date" label="Date" width="150" />
-      <el-table-column prop="name" label="Name" width="120" />
-      <el-table-column prop="state" label="State" width="120" />
-      <el-table-column prop="city" label="City" width="120" />
-      <el-table-column prop="address" label="Address" width="600" />
-      <el-table-column prop="zip" label="Zip" width="120" />
+    <el-table :data="house" style="width: 100%;height: 93%">
+      <el-table-column fixed prop="id" label="id" width="120" />
+      <el-table-column prop="room" label="room" width="120" />
+      <el-table-column prop="type" label="type" width="120" />
+      <el-table-column prop="floor" label="floor" width="120" />
+      <el-table-column prop="available" label="available" width="120" />
+      <el-table-column prop="picture1" label="picture1" width="120" />
+      <el-table-column prop="picture2" label="picture2" width="120" />
+      <el-table-column prop="picture3" label="picture3" width="120" />
+      <el-table-column prop="picture4" label="picture4" width="120" />
       <el-table-column fixed="right" label="操作" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="handleClick">修改</el-button>
@@ -69,7 +72,8 @@
 
 <script>
 import {Search} from "@element-plus/icons-vue";
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
+import axios from "axios";
 
 export default {
   name: "housekeeping",
@@ -98,47 +102,40 @@ export default {
       dialogFormVisible.value = true;
       console.log('click')
     }
-
     const tableData = [
       {
-        date: '2016-05-03',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Home',
-      },
-      {
-        date: '2016-05-02',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Office',
-      },
-      {
-        date: '2016-05-04',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Home',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Office',
-      }]
+        id: '2016-05-03',
+        room: 'Tom',
+        type: 'California',
+        floor: 'Los Angeles',
+        available: 'No. 189, Grove St, Los Angeles',
+        picture1: 'CA 90036',
+        picture2: 'Home',
+        picture3: 'Home',
+        picture4: 'Home',
+      }];
+
+    const house = ref();
+    /*
+     *数据查询
+     **/
+    const handleQuery = () => {
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      axios.get("http://127.0.0.1:9090/room/list").then((response)=>{
+        console.log("1111");
+        const data=response.data;
+        console.log(data);
+        house.value = data.data.records;
+      });
+    };
+
+    onMounted(()=>{
+      handleQuery();
+    });
 
     return{
       handleClick,
+      handleQuery,
 
       form,
 
@@ -146,7 +143,8 @@ export default {
       formLabelWidth,
       input1,
       select,
-      tableData
+      tableData,
+      house
     }
   }
 }
