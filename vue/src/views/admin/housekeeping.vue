@@ -121,8 +121,7 @@ export default {
      **/
     const handleQuery = () => {
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-      axios.get("http://127.0.0.1:9090/room/list").then((response)=>{
-        console.log("1111");
+      axios.get("/room/list").then((response)=>{
         const data=response.data;
         console.log(data);
         house.value = data.data.records;
