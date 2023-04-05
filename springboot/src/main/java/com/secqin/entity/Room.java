@@ -5,16 +5,41 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-@TableName("Room")
+@TableName("room")
 @Data
 public class Room {
     @TableId(type = IdType.AUTO)
     private Integer id;
+    /**
+     * 房间号
+     */
     private Integer room;
+    /**
+     * 房间类型
+     */
+    private Integer type;
+    /**
+     * 房间楼层
+     */
     private Integer floor;
+    /**
+     * 是否空闲
+     */
     private Integer available;
+    /**
+     * 展示图片1
+     */
     private String picture1;
+    /**
+     * 展示图片2
+     */
     private String picture2;
+    /**
+     * 展示图片3
+     */
     private String picture3;
+    /**
+     * 展示图片4
+     */
     private String picture4;
 }
