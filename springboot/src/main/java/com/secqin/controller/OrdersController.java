@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+public class OrdersController {
     @Resource
     OrdersMapper ordersMapper;
 
