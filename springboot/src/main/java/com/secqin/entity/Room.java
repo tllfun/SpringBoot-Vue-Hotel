@@ -17,7 +17,7 @@ public class Room {
     /**
      * 房间类型
      */
-    private Integer type;
+    private String type;
     /**
      * 房间楼层
      */
