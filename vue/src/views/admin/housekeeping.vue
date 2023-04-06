@@ -18,25 +18,25 @@
       </el-input>
     </div>
     <el-table :data="house" style="width: 100%;height: 93%">
-      <el-table-column fixed prop="id" label="id" width="120" />
-      <el-table-column prop="room" label="room" width="120" />
-      <el-table-column prop="type" label="type" width="120" />
-      <el-table-column prop="floor" label="floor" width="120" />
-      <el-table-column prop="available" label="available" width="120" />
-      <el-table-column prop="picture1" label="picture1" width="120" />
-      <el-table-column prop="picture2" label="picture2" width="120" />
-      <el-table-column prop="picture3" label="picture3" width="120" />
-      <el-table-column prop="picture4" label="picture4" width="120" />
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default>
+      <el-table-column fixed prop="id" label="id" width="120" align="center"/>
+      <el-table-column prop="room" label="room" width="120" align="center"/>
+      <el-table-column prop="type" label="type" width="120" align="center"/>
+      <el-table-column prop="floor" label="floor" width="120" align="center"/>
+      <el-table-column prop="available" label="available" width="120" align="center" />
+      <el-table-column prop="picture1" label="picture1" width="120" align="center"/>
+      <el-table-column prop="picture2" label="picture2" width="120" align="center"/>
+      <el-table-column prop="picture3" label="picture3" width="120" align="center"/>
+      <el-table-column prop="picture4" label="picture4" width="120" align="center"/>
+      <el-table-column fixed="right" label="操作" width="120" align="center">
+        <template v-slot="scope" #default >
           <el-button link type="primary" size="small" @click="handleClick">修改</el-button>
           <el-popconfirm
               confirm-button-text="Yes"
               cancel-button-text="No"
-              :icon="InfoFilled"
+              icon="InfoFilled"
               icon-color="#626AEF"
               title="Are you sure to delete this?"
-              @confirm="confirmEvent"
+              @confirm="handleDelete(scope.row.id)"
               @cancel="cancelEvent"
           >
             <template #reference>
@@ -74,6 +74,7 @@
 import {Search} from "@element-plus/icons-vue";
 import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "housekeeping",
@@ -102,18 +103,6 @@ export default {
       dialogFormVisible.value = true;
       console.log('click')
     }
-    const tableData = [
-      {
-        id: '2016-05-03',
-        room: 'Tom',
-        type: 'California',
-        floor: 'Los Angeles',
-        available: 'No. 189, Grove St, Los Angeles',
-        picture1: 'CA 90036',
-        picture2: 'Home',
-        picture3: 'Home',
-        picture4: 'Home',
-      }];
 
     const house = ref();
     /*
@@ -128,6 +117,28 @@ export default {
       });
     };
 
+    const msg = ref();
+    const handleDelete = (id) =>{
+      console.log(id);
+      axios.delete("/room/delete/"+id).then((response)=>{
+        const data=response.data;//data = CommonResp
+        msg.value = data.msg;
+        if(msg.value === "删除成功"){
+          //重新加载列表
+          handleQuery();
+          openMsg();
+        }
+
+      });
+    }
+
+    const openMsg = () => {
+      ElMessage({
+        message: '删除成功',
+        type: 'success',
+      })
+    }
+
     onMounted(()=>{
       handleQuery();
     });
@@ -135,6 +146,8 @@ export default {
     return{
       handleClick,
       handleQuery,
+      handleDelete,
+      openMsg,
 
       form,
 
@@ -142,7 +155,6 @@ export default {
       formLabelWidth,
       input1,
       select,
-      tableData,
       house
     }
   }
