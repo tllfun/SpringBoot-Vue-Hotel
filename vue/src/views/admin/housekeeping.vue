@@ -29,7 +29,7 @@
       <el-table-column prop="picture4" label="picture4" width="120" align="center"/>
       <el-table-column fixed="right" label="操作" width="120" align="center">
         <template v-slot="scope" #default >
-          <el-button link type="primary" size="small" @click="handleClick">修改</el-button>
+          <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
           <el-popconfirm
               confirm-button-text="Yes"
               cancel-button-text="No"
@@ -49,20 +49,41 @@
 
   <el-dialog v-model="dialogFormVisible" title="客房修改">
     <el-form :model="form">
-      <el-form-item label="Promotion name" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off" />
+      <el-form-item label="room" :label-width="formLabelWidth">
+        <el-input v-model="form.room" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="Zones" :label-width="formLabelWidth">
-        <el-select v-model="form.region" placeholder="Please select a zone">
-          <el-option label="Zone No.1" value="shanghai" />
-          <el-option label="Zone No.2" value="beijing" />
-        </el-select>
+      <el-form-item label="type" :label-width="formLabelWidth">
+        <el-input v-model="form.type" autocomplete="off" />
       </el-form-item>
+      <el-form-item label="floor" :label-width="formLabelWidth">
+        <el-input v-model="form.floor" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="available" :label-width="formLabelWidth">
+        <el-input v-model="form.available" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="picture1" :label-width="formLabelWidth">
+        <el-input v-model="form.picture1" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="picture2" :label-width="formLabelWidth">
+        <el-input v-model="form.picture2" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="picture3" :label-width="formLabelWidth">
+        <el-input v-model="form.picture3" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="picture4" :label-width="formLabelWidth">
+        <el-input v-model="form.picture4" autocomplete="off" />
+      </el-form-item>
+<!--      <el-form-item label="Zones" :label-width="formLabelWidth">-->
+<!--        <el-select v-model="form.region" placeholder="Please select a zone">-->
+<!--          <el-option label="Zone No.1" value="shanghai" />-->
+<!--          <el-option label="Zone No.2" value="beijing" />-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
+        <el-button type="primary" @click="handleEdit">
           Confirm
         </el-button>
       </span>
@@ -86,14 +107,15 @@ export default {
 
   setup(){
     const form = reactive({
-      name: '',
-      region: '',
-      date1: '',
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: '',
+      id:'',
+      room:'',
+      type:'',
+      floor:'',
+      available:'',
+      picture1:'',
+      picture2:'',
+      picture3:'',
+      picture4:'',
     })
     const formLabelWidth = '140px'
     const input1 = ref('');
@@ -101,9 +123,9 @@ export default {
       region:'1',
     });
     const dialogFormVisible = ref(false)
-    const handleClick = () => {
+    const handleClick = (id) => {
+      form.id = id;
       dialogFormVisible.value = true;
-      console.log('click')
     }
 
     const house = ref();
@@ -163,6 +185,23 @@ export default {
       })
     }
 
+    /*
+    编辑
+     */
+    const msg1 = ref();
+    const handleEdit = () => {
+        console.log(form);
+        axios.post("/room/save",form).then((response)=>{
+          const data=response.data;//data = CommonResp
+          msg1.value = data.msg;
+          if(msg1.value === "成功"){
+            //重新加载列表
+            handleQuery();
+            dialogFormVisible.value = false;
+          }
+        });
+    };
+
     onMounted(()=>{
       handleQuery();
     });
@@ -173,6 +212,7 @@ export default {
       handleDelete,
       openMsg,
       handleSearch,
+      handleEdit,
 
       form,
 
