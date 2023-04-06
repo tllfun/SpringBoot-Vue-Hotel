@@ -6,13 +6,13 @@
           class="input-with-select"
       >
         <template #prepend>
-          <el-button :icon="Search" />
+          <el-button :icon="Search" @click="handleSearch"/>
         </template>
         <template #append>
-          <el-select v-model="select" placeholder="Select" style="width: 115px">
-            <el-option label="Restaurant" value="1" />
-            <el-option label="Order No." value="2" />
-            <el-option label="Tel" value="3" />
+          <el-select v-model="select.region" placeholder="Select" style="width: 115px">
+            <el-option label="通过id查询" value="1" />
+            <el-option label="通过type查询" value="2" />
+            <el-option label="通过floor查询" value="3" />
           </el-select>
         </template>
       </el-input>
@@ -47,7 +47,7 @@
       </el-table-column>
     </el-table>
 
-  <el-dialog v-model="dialogFormVisible" title="Shipping address">
+  <el-dialog v-model="dialogFormVisible" title="客房修改">
     <el-form :model="form">
       <el-form-item label="Promotion name" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off" />
@@ -97,7 +97,9 @@ export default {
     })
     const formLabelWidth = '140px'
     const input1 = ref('');
-    const select = ref('');
+    const select = ref({
+      region:'1',
+    });
     const dialogFormVisible = ref(false)
     const handleClick = () => {
       dialogFormVisible.value = true;
@@ -109,13 +111,32 @@ export default {
      *数据查询
      **/
     const handleQuery = () => {
-      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       axios.get("/room/list").then((response)=>{
         const data=response.data;
         console.log(data);
         house.value = data.data.records;
       });
     };
+
+    /*
+     *通过特定的属性查询的数据查询
+     **/
+    const handleSearch = () =>{
+      house.value = [];
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+      axios.get("/room/search",{
+        params:{
+          type:select.value.region,
+          content:input1.value
+        }
+      }).then((response)=>{
+        const data=response.data;
+        console.log(data);
+        house.value = data.data.records;
+      });
+    }
+
+
 
     const msg = ref();
     const handleDelete = (id) =>{
@@ -132,6 +153,9 @@ export default {
       });
     }
 
+    /**
+     * 删除时显示删除成功
+     */
     const openMsg = () => {
       ElMessage({
         message: '删除成功',
@@ -148,6 +172,7 @@ export default {
       handleQuery,
       handleDelete,
       openMsg,
+      handleSearch,
 
       form,
 
