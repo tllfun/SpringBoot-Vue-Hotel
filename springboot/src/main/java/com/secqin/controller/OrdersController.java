@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @RequestMapping("/orders")
 public class OrdersController {
     @Resource
-    OrdersMapper ordersMapper;
+    private OrdersMapper ordersMapper;
 
     private Page<Orders> getPage(Integer id) {
         return ordersMapper.selectPage(new Page<>(1, 1), Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));

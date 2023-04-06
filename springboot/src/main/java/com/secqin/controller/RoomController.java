@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @RequestMapping("/room")
 public class RoomController {
     @Resource
-    RoomMapper roomMapper;
+    private RoomMapper roomMapper;
 
     @GetMapping("/list")
     public Result<?> getAll() {

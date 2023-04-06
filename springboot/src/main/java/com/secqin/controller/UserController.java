@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     private Page<User> getPageEQ(String username) {
         return userMapper.selectPage(new Page<>(1, 1), Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
