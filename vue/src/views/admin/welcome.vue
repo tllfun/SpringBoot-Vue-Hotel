@@ -28,9 +28,9 @@
                 <el-menu-item index="/admin/housekeeping">客房管理</el-menu-item>
                 <el-menu-item index="/admin/newroom">新增客房</el-menu-item>
               </el-sub-menu>
-              <el-menu-item index="3">
+              <el-menu-item index="/admin/orders">
                 <el-icon><Menu /></el-icon>
-                <span>客房类型管理</span>
+                <span>订单管理</span>
               </el-menu-item>
               <el-menu-item index="4">
                 <el-icon><document /></el-icon>

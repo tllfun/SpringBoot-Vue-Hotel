@@ -54,9 +54,9 @@ public class OrdersController {
         return Result.succes(getPage(order.getId()));
     }
 
-    @DeleteMapping("/delete")
-    public Result<?> delete(@RequestBody Orders order) {
-        ordersMapper.deleteById(order.getId());
+    @DeleteMapping("/delete/{id}")
+    public Result<?> delete(@PathVariable Long id) {
+        ordersMapper.deleteById(id);
         return Result.succes();
     }
 }

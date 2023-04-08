@@ -32,6 +32,10 @@ const routes = [
         path:'/admin/theWelcome',
         component:()=>import('../views/admin/the-welcome.vue'),
       },
+      {
+        path:'/admin/orders',
+        component:()=>import('../views/admin/orders.vue'),
+      },
     ],
     redirect:'/admin/theWelcome'
   },
