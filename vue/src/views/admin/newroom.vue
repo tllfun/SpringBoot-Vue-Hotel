@@ -2,59 +2,35 @@
   <div style="background-color: white;height: 100%">
     <div style="background-color: white;height: 100%">
       <br/>
-      <el-form :model="form" label-width="120px" style="margin-top: 10px">
-        <el-form-item label="Activity name">
-          <el-input v-model="form.name" />
+      <el-form ref="formRef" :model="form" label-width="120px" style="margin-top: 10px">
+        <el-form-item label="room" :label-width="formLabelWidth" prop="room">
+          <el-input v-model="form.room" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Activity zone">
-          <el-select v-model="form.region" placeholder="please select your zone">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
-          </el-select>
+        <el-form-item label="type" :label-width="formLabelWidth" prop="type">
+          <el-input v-model="form.type" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Activity time">
-          <el-col :span="11">
-            <el-date-picker
-                v-model="form.date1"
-                type="date"
-                placeholder="Pick a date"
-                style="width: 100%"
-            />
-          </el-col>
-          <el-col :span="2" class="text-center">
-            <span class="text-gray-500">-</span>
-          </el-col>
-          <el-col :span="11">
-            <el-time-picker
-                v-model="form.date2"
-                placeholder="Pick a time"
-                style="width: 100%"
-            />
-          </el-col>
+        <el-form-item label="floor" :label-width="formLabelWidth" prop="floor">
+          <el-input v-model="form.floor" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Instant delivery">
-          <el-switch v-model="form.delivery" />
+        <el-form-item label="available" :label-width="formLabelWidth" prop="available">
+          <el-input v-model="form.available" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Activity type">
-          <el-checkbox-group v-model="form.type">
-            <el-checkbox label="Online activities" name="type" />
-            <el-checkbox label="Promotion activities" name="type" />
-            <el-checkbox label="Offline activities" name="type" />
-            <el-checkbox label="Simple brand exposure" name="type" />
-          </el-checkbox-group>
+        <el-form-item label="picture1" :label-width="formLabelWidth" prop="picture1">
+          <el-input v-model="form.picture1" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Resources">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="Sponsor" />
-            <el-radio label="Venue" />
-          </el-radio-group>
+        <el-form-item label="picture2" :label-width="formLabelWidth" prop="picture2">
+          <el-input v-model="form.picture2" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="Activity form">
-          <el-input v-model="form.desc" type="textarea" />
+        <el-form-item label="picture3" :label-width="formLabelWidth" prop="picture3">
+          <el-input v-model="form.picture3" autocomplete="off" />
         </el-form-item>
+        <el-form-item label="picture4" :label-width="formLabelWidth" prop="picture4">
+          <el-input v-model="form.picture4" autocomplete="off" />
+        </el-form-item>
+
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button type="primary" @click="handleAdd">创建</el-button>
+          <el-button @click="clear(formRef)">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -63,31 +39,70 @@
 
 <script>
 
-import { reactive } from 'vue'
+import {reactive, ref} from 'vue'
+import axios from "axios";
+import {ElMessage} from "element-plus";
+import {FormInstance} from "element-plus";
 
 export default {
   name: "newroom",
 
   setup(){
     const form = reactive({
-      name: '',
-      region: '',
-      date1: '',
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: '',
+      id:'',
+      room:'',
+      type:'',
+      floor:'',
+      available:'',
+      picture1:'',
+      picture2:'',
+      picture3:'',
+      picture4:'',
     })
+    const formLabelWidth = '140px';
+    const formRef = ref('');
 
-    const onSubmit = () => {
-      console.log('submit!')
+    /**
+     * 添加
+     * @type {Ref<any>}
+     */
+    const msg1 = ref();
+    const handleAdd = () => {
+      console.log(form);
+      axios.post("/room/add",form).then((response)=>{
+        const data=response.data;//data = CommonResp
+        msg1.value = data.msg;
+        if(msg1.value === "成功"){
+          openMsg();
+          // resetFormData.resetFields();
+        }
+      });
+    };
+
+
+    const clear = (formEl) => {
+      formEl.resetFields();
     }
 
+
+    /**
+     * 删除时显示删除成功
+     */
+    const openMsg = () => {
+      ElMessage({
+        message: '添加成功',
+        type: 'success',
+      })
+    }
     return{
-      onSubmit,
+      handleAdd,
+      openMsg,
+      clear,
 
       form,
+
+      formLabelWidth,
+      formRef,
     }
   }
 }
