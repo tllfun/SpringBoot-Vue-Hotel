@@ -11,52 +11,70 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/orders")
 public class OrdersController {
     @Resource
-    private OrdersMapper ordersMapper;
-
-//    @Autowired
-//    private OrdersServiceImpl ordersService;
-
-    private Page<Orders> getPage(Integer id) {
-        return ordersMapper.selectPage(new Page<>(1, 1), Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));
-    }
+    private OrdersService service;
 
     @GetMapping("/list")
     public Result<?> getAll() {
-        Page<Orders> orderPage = ordersMapper.selectPage(new Page<>(1, 10), Wrappers.<Orders>lambdaQuery().ne(Orders::getId, 0));
-        return Result.succes(orderPage);
+        return service.getAll();
     }
-
-    @GetMapping("/query/userid")
-    public Result<?> queryUserId(@RequestParam(defaultValue = "0") Integer userId) {
-        Page<Orders> ordersPage = ordersMapper.selectPage(new Page<>(1, 10), Wrappers.<Orders>lambdaQuery().eq(Orders::getUserId, userId));
-        return Result.succes(ordersPage);
-    }
-//    @GetMapping("/query/userid")
-//    public Result<?> queryUserId(@RequestParam(defaultValue = "1") Integer userId) {
-//        return Result.succes(ordersService.Fuck(userId));
-//    }
-
     @PostMapping("/insert")
     public Result<?> insert(@RequestBody Orders order) {
-        ordersMapper.insert(order);
-        Page<Orders> ordersPage = ordersMapper.selectPage(new Page<>(1, 1), Wrappers.<Orders>lambdaQuery().orderByDesc(Orders::getId));
-        return Result.succes(ordersPage);
+        return service.insert(order);
     }
 
     @PutMapping("/update")
     public Result<?> update(@RequestBody Orders order) {
-        ordersMapper.updateById(order);
-        return Result.succes(getPage(order.getId()));
+        return service.updateByID(order);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Result<?> delete(@PathVariable Long id) {
-        ordersMapper.deleteById(id);
-        return Result.succes();
+    public Result<?> delete(@PathVariable Integer id) {
+        return service.deleteByID(id);
+    }
+
+    @GetMapping("query/id/{id}")
+    public Result<?> queryID(@PathVariable Integer id) {
+        return service.queryID(id);
+    }
+
+    @GetMapping("/query/userid")
+    public Result<?> queryUserId(@RequestParam(defaultValue = "1") Integer currentPage,
+                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 @RequestParam(defaultValue = "") Integer keyWord) {
+        return service.queryUserID(currentPage, pageSize, keyWord);
+    }
+
+    @GetMapping("/query/managerid")
+    public Result<?> queryManagerID(@RequestParam(defaultValue = "1") Integer currentPage,
+                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                    @RequestParam(defaultValue = "") Integer keyWord) {
+        return service.queryManagerID(currentPage, pageSize, keyWord);
+    }
+
+    @GetMapping("/query/room")
+    public Result<?> queryRoom(@RequestParam(defaultValue = "1") Integer currentPage,
+                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "") Integer keyWord) {
+        return service.queryRoom(currentPage, pageSize, keyWord);
+    }
+
+    @GetMapping("/query/inTime")
+    public Result<?> queryInTime(@RequestParam(defaultValue = "1") Integer currentPage,
+                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 @RequestParam(defaultValue = "") Date keyWord) {
+        return service.queryInTime(currentPage, pageSize, keyWord);
+    }
+
+    @GetMapping("/query/outTime")
+    public Result<?> queryOutTime(@RequestParam(defaultValue = "1") Integer currentPage,
+                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                  @RequestParam(defaultValue = "") Date keyWord) {
+        return service.queryOutTime(currentPage, pageSize, keyWord);
     }
 }

@@ -4,145 +4,104 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secqin.config.Result;
 import com.secqin.entity.User;
-import com.secqin.mapper.UserMapper;
+import com.secqin.service.UserService;
+import com.secqin.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private UserMapper userMapper;
-
-    private Page<User> getPageEQ(String username) {
-        return userMapper.selectPage(new Page<>(1, 1), Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
-    }
-
-    private boolean containUser(String username) {
-        return userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username)) != null;
-    }
-
-//    private Page<User> getPagesLike(String sign, Integer currentPage, Integer pageSize, String keyWord) {
-//        if (sign == "username") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getUsername, keyWord));
-//        } else if (sign == "password") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getPassword, keyWord));
-//        }  else if (sign == "role") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getRole, keyWord));
-//        } else if (sign == "phone") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getPhone, keyWord));
-//        } else if (sign == "email") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getEmail, keyWord));
-//        } else if (sign == "cond") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getCond, keyWord));
-//        } else if (sign == "room") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getRoom, keyWord));
-//        } else if (sign == "inTime") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getInTime, keyWord));
-//        } else if (sign == "outTime") {
-//            return userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getOutTime, keyWord));
-//        } else {
-//            return new Page<>();
-//        }
-//    }
+    private UserService service;
 
     @GetMapping("/list")
     public Result<?> getAll() {
-        Page<User> userPage = userMapper.selectPage(new Page<>(1, 1000), Wrappers.<User>lambdaQuery().ne(User::getId, 0));
-        return Result.succes(userPage);
+        return service.getAll();
+    }
+
+    @PutMapping("/update")
+    public Result<?> update(@RequestBody User user) {
+        return service.updateByID(user);
+    }
+
+    @PostMapping("/insert")
+    public Result<?> insert(@RequestBody User user) {
+        return service.insert(user);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Result<?> delete(@PathVariable Integer id) {
+        return service.deleteByID(id);
+    }
+
+    @GetMapping("/query/id/{id}")
+    public Result<?> queryID(@PathVariable Integer id) {
+        return service.queryID(id);
     }
 
     @GetMapping("/query/username")
     public Result<?> queryUsername(@RequestParam(defaultValue = "1") Integer currentPage,
                                    @RequestParam(defaultValue = "10") Integer pageSize,
                                    @RequestParam(defaultValue = "") String username) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getUsername, username));
-        return Result.succes(userPage);
+        return service.queryUsername(currentPage,pageSize,username);
     }
 
     @GetMapping("/query/password")
     public Result<?> queryPassword(@RequestParam(defaultValue = "1") Integer currentPage,
                                    @RequestParam(defaultValue = "10") Integer pageSize,
                                    @RequestParam(defaultValue = "") String password) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getPassword, password));
-        return Result.succes(userPage);
+        return service.queryPassword(currentPage, pageSize, password);
     }
     @GetMapping("/query/role")
     public Result<?> queryRole(@RequestParam(defaultValue = "1") Integer currentPage,
                                @RequestParam(defaultValue = "10") Integer pageSize,
-                               @RequestParam(defaultValue = "") String role) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getRole, role));
-        return Result.succes(userPage);
+                               @RequestParam(defaultValue = "") Integer role) {
+        return service.queryRole(currentPage, pageSize, role);
     }
 
     @GetMapping("/query/phone")
     public Result<?> queryPhone(@RequestParam(defaultValue = "1") Integer currentPage,
                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                 @RequestParam(defaultValue = "") String phone) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getPhone, phone));
-        return Result.succes(userPage);
+        return service.queryPhone(currentPage, pageSize, phone);
     }
     @GetMapping("/query/email")
     public Result<?> queryEmail(@RequestParam(defaultValue = "1") Integer currentPage,
                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                 @RequestParam(defaultValue = "") String email) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getEmail, email));
-        return Result.succes(userPage);
+        return service.queryEmail(currentPage, pageSize, email);
     }
 
     @GetMapping("/query/cond")
     public Result<?> queryCond(@RequestParam(defaultValue = "1") Integer currentPage,
                                @RequestParam(defaultValue = "10") Integer pageSize,
-                               @RequestParam(defaultValue = "") String cond) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getCond, cond));
-        return Result.succes(userPage);
+                               @RequestParam(defaultValue = "") Integer cond) {
+        return service.queryCond(currentPage, pageSize, cond);
     }
 
     @GetMapping("/query/room")
     public Result<?> queryRoom(@RequestParam(defaultValue = "1") Integer currentPage,
                                @RequestParam(defaultValue = "10") Integer pageSize,
-                               @RequestParam(defaultValue = "") String room) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getRoom, room));
-        return Result.succes(userPage);
+                               @RequestParam(defaultValue = "") Integer room) {
+        return service.queryRoom(currentPage, pageSize, room);
     }
 
     @GetMapping("/query/inTime")
     public Result<?> queryInTime(@RequestParam(defaultValue = "1") Integer currentPage,
                                  @RequestParam(defaultValue = "10") Integer pageSize,
-                                 @RequestParam(defaultValue = "") String inTime) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getInTime, inTime));
-        return Result.succes(userPage);
+                                 @RequestParam(defaultValue = "") Date inTime) {
+        return service.queryInTime(currentPage, pageSize, inTime);
     }
 
     @GetMapping("/query/outTime")
     public Result<?> queryOutTime(@RequestParam(defaultValue = "1") Integer currentPage,
                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                  @RequestParam(defaultValue = "") String outTime) {
-        Page<User> userPage = userMapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getOutTime, outTime));
-        return Result.succes(userPage);
-    }
-
-    @PostMapping("/insert")
-    public Result<?> save(@RequestBody User user) {
-//        User tempUser = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
-        if (containUser(user.getUsername())) {
-            return Result.error("-1", "用户名已经存在");
-        } else {
-            userMapper.insert(user);
-            return Result.succes(getPageEQ(user.getUsername()));
-        }
-    }
-
-    @PutMapping("/update")
-    public Result<?> update(@RequestBody User user) {
-        userMapper.updateById(user);
-        return Result.succes(getPageEQ(user.getUsername()));
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public Result<?> delete(@PathVariable Long id) {
-        userMapper.deleteById(id);
-        return Result.succes();
+                                  @RequestParam(defaultValue = "") Date outTime) {
+        return service.queryOutTime(currentPage, pageSize, outTime);
     }
 }

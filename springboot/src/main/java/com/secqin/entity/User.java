@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @TableName("user")
 @Data
@@ -45,10 +46,10 @@ public class User {
      * 入住时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime inTime;
+    private Date inTime;
     /**
      * 退房时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime outTime;
+    private Date outTime;
 }

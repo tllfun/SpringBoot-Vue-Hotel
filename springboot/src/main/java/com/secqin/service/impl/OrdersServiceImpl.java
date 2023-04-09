@@ -3,20 +3,93 @@ package com.secqin.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secqin.config.Result;
 import com.secqin.entity.Orders;
+import com.secqin.entity.User;
 import com.secqin.mapper.OrdersMapper;
 import com.secqin.service.OrdersService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Service
 public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements OrdersService {
     @Resource
-    private OrdersMapper ordersMapper;
+    private OrdersMapper mapper;
+
+    private Orders getNewUserByID(Orders orders) {
+        return mapper.selectById(orders.getId());
+    }
 
     @Override
-    public Page<Orders> Fuck(Integer userId) {
-        return ordersMapper.selectPage(new Page<>(1, 100), Wrappers.<Orders>lambdaQuery().eq(Orders::getUserId, userId));
+    public Result getAll() {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().ne(Orders::getId, 0));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result updateByID(Orders orders) {
+        Orders orders1 = mapper.selectOne(Wrappers.<Orders>lambdaQuery().eq(Orders::getId, orders.getId()));
+        if (orders1 == null) {
+            return Result.error("-1", "订单不存在");
+        } else {
+            mapper.updateById(orders);
+            return Result.succes("订单信息更新成功", this.getNewUserByID(orders));
+        }
+    }
+
+    @Override
+    public Result insert(Orders orders) {
+        mapper.insert(orders);
+        return Result.succes("订单添加成功", this.getNewUserByID(orders));
+    }
+
+    @Override
+    public Result deleteByID(Integer id) {
+        Orders orders = mapper.selectOne(Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));
+        if (orders == null) {
+            return Result.error("-1", "订单不存在");
+        } else {
+            mapper.deleteById(id);
+            return Result.succes("订单删除成功");
+        }
+    }
+
+    @Override
+    public Result queryID(Integer id) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result queryUserID(Integer currentPage, Integer pageSize, Integer keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getUserId, keyWord));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result queryManagerID(Integer currentPage, Integer pageSize, Integer keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getManagerId, keyWord));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result queryRoom(Integer currentPage, Integer pageSize, Integer keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getRoom, keyWord));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result queryInTime(Integer currentPage, Integer pageSize, Date keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getInTime, keyWord));
+        return Result.succes(page);
+    }
+
+    @Override
+    public Result queryOutTime(Integer currentPage, Integer pageSize, Date keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getOutTime, keyWord));
+        return Result.succes(page);
     }
 }
