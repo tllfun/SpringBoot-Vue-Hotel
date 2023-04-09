@@ -32,9 +32,9 @@
                 <el-icon><Menu /></el-icon>
                 <span>订单管理</span>
               </el-menu-item>
-              <el-menu-item index="4">
+              <el-menu-item index="/admin/users">
                 <el-icon><document /></el-icon>
-                <span>客户管理</span>
+                <span>用户管理</span>
               </el-menu-item>
               <el-menu-item index="5">
                 <el-icon><setting /></el-icon>

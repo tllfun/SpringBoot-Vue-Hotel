@@ -140,9 +140,9 @@ public class UserController {
         return Result.succes(getPageEQ(user.getUsername()));
     }
 
-    @DeleteMapping("/delete")
-    public Result<?> delete(@RequestBody User user) {
-        userMapper.deleteById(user.getId());
+    @DeleteMapping("/delete/{id}")
+    public Result<?> delete(@PathVariable Long id) {
+        userMapper.deleteById(id);
         return Result.succes();
     }
 }
