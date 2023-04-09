@@ -14,7 +14,6 @@ public interface UserService extends IService<User> {
     Result deleteByID(Integer id);
     Result queryID(Integer id);
     Result queryUsername(Integer currentPage, Integer pageSize, String keyWord);
-    Result queryPassword(Integer currentPage, Integer pageSize, String keyWord);
     Result queryRole(Integer currentPage, Integer pageSize, Integer keyWord);
     Result queryPhone(Integer currentPage, Integer pageSize, String keyWord);
     Result queryEmail(Integer currentPage, Integer pageSize, String keyWord);

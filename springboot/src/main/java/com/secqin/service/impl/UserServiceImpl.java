@@ -81,13 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result queryUsername(Integer currentPage, Integer pageSize, String keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getUsername, keyWord));
-        return Result.succes(page);
-    }
-
-    @Override
-    public Result queryPassword(Integer currentPage, Integer pageSize, String keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getPassword, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getUsername, keyWord));
         return Result.succes(page);
     }
 

@@ -51,12 +51,6 @@ public class UserController {
         return service.queryUsername(currentPage,pageSize,username);
     }
 
-    @GetMapping("/query/password")
-    public Result<?> queryPassword(@RequestParam(defaultValue = "1") Integer currentPage,
-                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                   @RequestParam(defaultValue = "") String password) {
-        return service.queryPassword(currentPage, pageSize, password);
-    }
     @GetMapping("/query/role")
     public Result<?> queryRole(@RequestParam(defaultValue = "1") Integer currentPage,
                                @RequestParam(defaultValue = "10") Integer pageSize,
