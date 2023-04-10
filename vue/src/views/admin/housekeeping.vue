@@ -146,10 +146,10 @@ export default {
     const handleSearch = () =>{
       house.value = [];
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-      axios.get("/room/search",{
+      axios.get("/room/query/all",{
         params:{
           type:select.value.region,
-          content:input1.value
+          keyWord:input1.value
         }
       }).then((response)=>{
         const data=response.data;

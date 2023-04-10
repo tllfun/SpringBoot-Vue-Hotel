@@ -69,7 +69,7 @@ export default {
     const msg1 = ref();
     const handleAdd = () => {
       console.log(form);
-      axios.post("/room/add",form).then((response)=>{
+      axios.post("/room/insert",form).then((response)=>{
         const data=response.data;//data = CommonResp
         msg1.value = data.msg;
         if(msg1.value === "成功"){
