@@ -36,10 +36,6 @@
                 <el-icon><document /></el-icon>
                 <span>用户管理</span>
               </el-menu-item>
-              <el-menu-item index="5">
-                <el-icon><setting /></el-icon>
-                <span>工作人员管理</span>
-              </el-menu-item>
             </el-menu>
           </el-aside>
           <el-container>

@@ -36,12 +36,12 @@
         <template v-slot="scope" #default >
           <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
           <el-popconfirm
-              confirm-button-text="Yes"
-              cancel-button-text="No"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
               icon="InfoFilled"
               icon-color="#626AEF"
-              title="Are you sure to delete this?"
-              @confirm="handleDelete(scope.row.id)"
+              title="确定要删除吗?"
+              @confirm="handleDelete(scope.row)"
               @cancel="cancelEvent"
           >
             <template #reference>
@@ -276,12 +276,12 @@ export default {
 
 
     const msg = ref();
-    const handleDelete = (id) =>{
-      console.log(id);
-      axios.delete("/user/delete/"+id).then((response)=>{
+    const handleDelete = (row) =>{
+      console.log(row);
+      axios.delete("/user/delete", {data:row}).then((response)=>{
         const data=response.data;//data = CommonResp
-        msg.value = data.msg;
-        if(msg.value === "成功"){
+        msg.value = data.code;
+        if(msg.value === '0'){
           //重新加载列表
           handleQuery();
           openMsg();
@@ -308,8 +308,8 @@ export default {
         console.log(form);
         axios.put("/user/update",form).then((response)=>{
           const data=response.data;//data = CommonResp
-          msg1.value = data.msg;
-          if(msg1.value === "成功"){
+          msg1.value = data.code;
+          if(msg1.value === '0'){
             //重新加载列表
             handleQuery();
             dialogFormVisible.value = false;
@@ -335,12 +335,12 @@ export default {
     const handleAdd = (formRef) => {
       axios.post("/user/insert", addForm).then((response)=>{
         const data=response.data;//data = CommonResp
-        addMsg.value = data.msg;
-        if(addMsg.value === "成功"){
+        addMsg.value = data.code;
+        if(addMsg.value === '0'){
+          handleQuery();
           AddFormVisible.value = false;
           openMsgAdd();
           clearVisible(formRef);
-          // resetFormData.resetFields();
         }
       });
     };

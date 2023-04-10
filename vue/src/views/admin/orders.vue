@@ -27,11 +27,11 @@
         <template v-slot="scope" #default >
           <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
           <el-popconfirm
-              confirm-button-text="Yes"
-              cancel-button-text="No"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
               icon="InfoFilled"
               icon-color="#626AEF"
-              title="Are you sure to delete this?"
+              title="确定要删除吗?"
               @confirm="handleDelete(scope.row)"
               @cancel="cancelEvent"
           >
