@@ -46,7 +46,7 @@ public class RoomController {
     public Result<?> queryID(@RequestParam(defaultValue = "1") Integer currentPage,
                              @RequestParam(defaultValue = "-1") Integer pageSize,
                              @RequestParam(defaultValue = "") Integer id) {
-        return service.queryType(currentPage, pageSize, id);
+        return service.queryID(currentPage, pageSize, id);
     }
 
     @GetMapping("query/room")
@@ -67,7 +67,7 @@ public class RoomController {
     public Result<?> queryFloor(@RequestParam(defaultValue = "1") Integer currentPage,
                                 @RequestParam(defaultValue = "-1") Integer pageSize,
                                 @RequestParam(defaultValue = "") Integer floor) {
-        return service.queryType(currentPage, pageSize, floor);
+        return service.queryFloor(currentPage, pageSize, floor);
     }
 
     @GetMapping("query/all")
