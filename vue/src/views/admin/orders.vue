@@ -2,16 +2,24 @@
     <div class="mt-4">
       <el-input
           v-model="input1"
-          placeholder="请输入userId进行查询"
+          placeholder="请输入内容查询"
           class="input-with-select"
       >
         <template #prepend>
           <el-button :icon="Search" @click="handleSearch"/>
         </template>
         <template #append>
-          <el-button round @click="add">添加</el-button>
+          <el-select v-model="select.region" placeholder="Select" style="width: 150px">
+            <el-option label="通过id查询" value="1" />
+            <el-option label="通过managerId查询" value="2" />
+            <el-option label="通过room查询" value="3" />
+            <el-option label="通过userId查询" value="4" />
+          </el-select>
         </template>
       </el-input>
+      <div style="float: right;margin-right: 45%;margin-top: 10px">
+        <el-button type="info"  @click="add">添加</el-button>
+      </div>
 
     </div>
     <el-table :data="orders" style="width: 100%;height: 90%" height="400">
@@ -25,7 +33,7 @@
       <el-table-column prop="comments" label="comments" width="120" align="center"/>
       <el-table-column fixed="right" label="操作" width="120" align="center">
         <template v-slot="scope" #default >
-          <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
+          <el-button link type="primary" size="small" @click="handleClick(scope.row)">修改</el-button>
           <el-popconfirm
               confirm-button-text="确定"
               cancel-button-text="取消"
@@ -159,8 +167,15 @@ export default {
     const dialogFormVisible = ref(false)
     const AddFormVisible = ref(false)
     const editFormRef = ref('');
-    const handleClick = (id) => {
-      form.id = id;
+    const handleClick = (row) => {
+      form.id = row.id;
+      form.userId = row.userId;
+      form.room = row.room;
+      form.managerId = row.managerId;
+      form.inTime = row.inTime;
+      form.outTime = row.outTime;
+      form.comments = row.comments;
+      form.updateTime = row.updateTime;
       dialogFormVisible.value = true;
     }
 
@@ -180,14 +195,64 @@ export default {
      *通过特定的属性查询的数据查询
      **/
     const handleSearch = () =>{
+      console.log(select.value.region);
       if (input1.value == null || input1.value === ''){
         handleQuery();
-      } else {
+      }  else if(select.value.region === '1'){
+        //用Id查询
+        orders.value = [];
+        // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+        console.log(input1)
+        axios.get("/orders/query/id",{
+          params:{
+            currentPage:'',
+            pageSize:'',
+            id:input1.value,
+          }
+        }).then((response)=>{
+          const data=response.data;
+          console.log(data);
+          orders.value = data.data.records;
+        });
+      } else if(select.value.region === '2'){
+        //managerId查询
+        orders.value = [];
+        console.log(input1)
+        axios.get("/orders/query/managerId",{
+          params:{
+            currentPage:'',
+            pageSize:'',
+            keyWord:input1.value,
+          }
+        }).then((response)=>{
+          const data=response.data;
+          console.log(data);
+          orders.value = data.data.records;
+        });
+      } else if(select.value.region === '3'){
+        //room查询
+        orders.value = [];
+        console.log(input1)
+        axios.get("/orders/query/room",{
+          params:{
+            currentPage:'',
+            pageSize:'',
+            keyWord:input1.value,
+          }
+        }).then((response)=>{
+          const data=response.data;
+          console.log(data);
+          orders.value = data.data.records;
+        });
+      } else if(select.value.region === '4'){
+        //userId查询
         orders.value = [];
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
         console.log(input1)
         axios.get("/orders/query/userId",{
           params:{
+            currentPage:'',
+            pageSize:'',
             keyWord:input1.value,
           }
         }).then((response)=>{
@@ -203,7 +268,7 @@ export default {
     const msg = ref();
     const handleDelete = (row) =>{
       console.log(row);
-      axios.delete("/orders/delete/", {data:row}).then((response)=>{
+      axios.delete("/orders/delete", {data:row}).then((response)=>{
         const data=response.data;//data = CommonResp
         msg.value = data.code;
         if(msg.value === '0'){

@@ -29,7 +29,7 @@
       <el-table-column prop="picture4" label="picture4" width="120" align="center"/>
       <el-table-column fixed="right" label="操作" width="120" align="center">
         <template v-slot="scope" #default >
-          <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
+          <el-button link type="primary" size="small" @click="handleClick(scope.row)">修改</el-button>
           <el-popconfirm
               confirm-button-text="确定"
               cancel-button-text="取消"
@@ -73,12 +73,6 @@
       <el-form-item label="picture4" :label-width="formLabelWidth">
         <el-input v-model="form.picture4" autocomplete="off" />
       </el-form-item>
-<!--      <el-form-item label="Zones" :label-width="formLabelWidth">-->
-<!--        <el-select v-model="form.region" placeholder="Please select a zone">-->
-<!--          <el-option label="Zone No.1" value="shanghai" />-->
-<!--          <el-option label="Zone No.2" value="beijing" />-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -123,8 +117,16 @@ export default {
       region:'1',
     });
     const dialogFormVisible = ref(false)
-    const handleClick = (id) => {
-      form.id = id;
+    const handleClick = (row) => {
+      form.id = row.id;
+      form.room=row.room;
+      form.type=row.type;
+      form.floor=row.floor;
+      form.available=row.available;
+      form.picture1=row.picture1;
+      form.picture2=row.picture2;
+      form.picture3=row.picture3;
+      form.picture4=row.picture4;
       dialogFormVisible.value = true;
     }
 

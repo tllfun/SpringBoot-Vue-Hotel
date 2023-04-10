@@ -18,7 +18,7 @@
         </template>
       </el-input>
       <div style="float: right;margin-right: 45%;margin-top: 10px">
-        <el-button round @click="add">添加</el-button>
+        <el-button type="info"  @click="add">添加</el-button>
       </div>
     </div>
 
@@ -29,12 +29,13 @@
       <el-table-column prop="role" label="role" width="120" align="center"/>
       <el-table-column prop="phone" label="phone" width="120" align="center" />
       <el-table-column prop="email" label="email" width="120" align="center"/>
+      <el-table-column prop="cond" label="cond" width="120" align="center"/>
       <el-table-column prop="room" label="room" width="120" align="center"/>
       <el-table-column prop="inTime" label="inTime" width="120" align="center"/>
       <el-table-column prop="outTime" label="outTime" width="120" align="center"/>
       <el-table-column fixed="right" label="操作" width="120" align="center">
         <template v-slot="scope" #default >
-          <el-button link type="primary" size="small" @click="handleClick(scope.row.id)">修改</el-button>
+          <el-button link type="primary" size="small" @click="handleClick(scope.row)">修改</el-button>
           <el-popconfirm
               confirm-button-text="确定"
               cancel-button-text="取消"
@@ -184,8 +185,17 @@ export default {
     const dialogFormVisible = ref(false)
     const AddFormVisible = ref(false)
     const editFormRef = ref('');
-    const handleClick = (id) => {
-      form.id = id;
+    const handleClick = (row) => {
+      form.id = row.id;
+      form.username=row.username;
+      form.password=row.password;
+      form.role=row.role;
+      form.phone=row.phone;
+      form.email=row.email;
+      form.cond=row.cond;
+      form.room=row.room;
+      form.inTime=row.inTime;
+      form.outTime=row.outTime;
       dialogFormVisible.value = true;
     }
 
