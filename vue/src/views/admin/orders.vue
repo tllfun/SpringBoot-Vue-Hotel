@@ -32,7 +32,7 @@
               icon="InfoFilled"
               icon-color="#626AEF"
               title="Are you sure to delete this?"
-              @confirm="handleDelete(scope.row.id)"
+              @confirm="handleDelete(scope.row)"
               @cancel="cancelEvent"
           >
             <template #reference>
@@ -186,9 +186,9 @@ export default {
         orders.value = [];
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
         console.log(input1)
-        axios.get("/orders/query/userid",{
+        axios.get("/orders/query/userId",{
           params:{
-            userId:input1.value,
+            keyWord:input1.value,
           }
         }).then((response)=>{
           const data=response.data;
@@ -201,12 +201,12 @@ export default {
 
 
     const msg = ref();
-    const handleDelete = (id) =>{
-      console.log(id);
-      axios.delete("/orders/delete/"+id).then((response)=>{
+    const handleDelete = (row) =>{
+      console.log(row);
+      axios.delete("/orders/delete/", {data:row}).then((response)=>{
         const data=response.data;//data = CommonResp
-        msg.value = data.msg;
-        if(msg.value === "成功"){
+        msg.value = data.code;
+        if(msg.value === '0'){
           //重新加载列表
           handleQuery();
           openMsg();
@@ -233,8 +233,8 @@ export default {
         console.log(form);
         axios.put("/orders/update",form).then((response)=>{
           const data=response.data;//data = CommonResp
-          msg1.value = data.msg;
-          if(msg1.value === "成功"){
+          msg1.value = data.code;
+          if(msg1.value === '0'){
             //重新加载列表
             handleQuery();
             dialogFormVisible.value = false;
@@ -260,8 +260,9 @@ export default {
     const handleAdd = (formRef) => {
       axios.post("/orders/insert", addForm).then((response)=>{
         const data=response.data;//data = CommonResp
-        addMsg.value = data.msg;
-        if(addMsg.value === "成功"){
+        addMsg.value = data.code;
+        if(addMsg.value === '0'){
+          handleQuery();
           AddFormVisible.value = false;
           openMsgAdd();
           clearVisible(formRef);
