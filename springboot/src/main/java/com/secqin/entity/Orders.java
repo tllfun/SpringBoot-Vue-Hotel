@@ -27,20 +27,20 @@ public class Orders {
     /**
      * 入住时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime inTime;
 
     /**
      * 退房时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime outTime;
 
     /**
      * 修改订单的时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updateTime;
     /**
      * 备注

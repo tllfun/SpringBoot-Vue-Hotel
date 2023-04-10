@@ -24,8 +24,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
     @Override
-    public Result getAll() {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().ne(Orders::getId, 0));
+    public Result getAll(Integer currentPage, Integer pageSize) {
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().ne(Orders::getId, 0));
         return Result.succes(page);
     }
 
@@ -47,49 +47,49 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
     @Override
-    public Result deleteByID(Integer id) {
-        Orders orders = mapper.selectOne(Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));
+    public Result deleteByID(Orders orders) {
+        Orders orders1 = mapper.selectOne(Wrappers.<Orders>lambdaQuery().eq(Orders::getId, orders.getId()));
         if (orders == null) {
             return Result.error("-1", "订单不存在");
         } else {
-            mapper.deleteById(id);
+            mapper.deleteById(orders.getId());
             return Result.succes("订单删除成功");
         }
     }
 
     @Override
-    public Result queryID(Integer id) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getId, id));
+    public Result queryID(Integer currentPage, Integer pageSize, Integer id) {
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getId, id));
         return Result.succes(page);
     }
 
     @Override
     public Result queryUserID(Integer currentPage, Integer pageSize, Integer keyWord) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getUserId, keyWord));
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getUserId, keyWord));
         return Result.succes(page);
     }
 
     @Override
     public Result queryManagerID(Integer currentPage, Integer pageSize, Integer keyWord) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getManagerId, keyWord));
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getManagerId, keyWord));
         return Result.succes(page);
     }
 
     @Override
     public Result queryRoom(Integer currentPage, Integer pageSize, Integer keyWord) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getRoom, keyWord));
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getRoom, keyWord));
         return Result.succes(page);
     }
 
     @Override
-    public Result queryInTime(Integer currentPage, Integer pageSize, Date keyWord) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getInTime, keyWord));
+    public Result queryInTime(Integer currentPage, Integer pageSize, String keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getInTime, keyWord));
         return Result.succes(page);
     }
 
     @Override
-    public Result queryOutTime(Integer currentPage, Integer pageSize, Date keyWord) {
-        Page<Orders> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<Orders>lambdaQuery().eq(Orders::getOutTime, keyWord));
+    public Result queryOutTime(Integer currentPage, Integer pageSize, String keyWord) {
+        Page<Orders> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<Orders>lambdaQuery().like(Orders::getOutTime, keyWord));
         return Result.succes(page);
     }
 }

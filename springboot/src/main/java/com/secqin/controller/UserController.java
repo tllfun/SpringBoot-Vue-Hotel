@@ -20,8 +20,9 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/list")
-    public Result<?> getAll() {
-        return service.getAll();
+    public Result<?> getAll(@RequestParam(defaultValue = "1") Integer currentPage,
+                            @RequestParam(defaultValue = "-1") Integer pageSize) {
+        return service.getAll(currentPage, pageSize);
     }
 
     @PutMapping("/update")
@@ -34,68 +35,81 @@ public class UserController {
         return service.insert(user);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Result<?> delete(@PathVariable Integer id) {
-        return service.deleteByID(id);
+    @DeleteMapping("/delete")
+    public Result<?> delete(@RequestBody User user) {
+        return service.deleteByID(user);
     }
 
-    @GetMapping("/query/id/{id}")
-    public Result<?> queryID(@PathVariable Integer id) {
-        return service.queryID(id);
+    @GetMapping("/query/id")
+    public Result<?> queryID(@RequestParam(defaultValue = "1") Integer currentPage,
+                             @RequestParam(defaultValue = "-1") Integer pageSize,
+                             @RequestParam(defaultValue = "") Integer id) {
+        return service.queryID(currentPage, pageSize, id);
     }
 
     @GetMapping("/query/username")
     public Result<?> queryUsername(@RequestParam(defaultValue = "1") Integer currentPage,
-                                   @RequestParam(defaultValue = "10") Integer pageSize,
+                                   @RequestParam(defaultValue = "-1") Integer pageSize,
                                    @RequestParam(defaultValue = "") String username) {
         return service.queryUsername(currentPage,pageSize,username);
     }
 
     @GetMapping("/query/role")
     public Result<?> queryRole(@RequestParam(defaultValue = "1") Integer currentPage,
-                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "-1") Integer pageSize,
                                @RequestParam(defaultValue = "") Integer role) {
         return service.queryRole(currentPage, pageSize, role);
     }
 
     @GetMapping("/query/phone")
     public Result<?> queryPhone(@RequestParam(defaultValue = "1") Integer currentPage,
-                                @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(defaultValue = "-1") Integer pageSize,
                                 @RequestParam(defaultValue = "") String phone) {
         return service.queryPhone(currentPage, pageSize, phone);
     }
     @GetMapping("/query/email")
     public Result<?> queryEmail(@RequestParam(defaultValue = "1") Integer currentPage,
-                                @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(defaultValue = "-1") Integer pageSize,
                                 @RequestParam(defaultValue = "") String email) {
         return service.queryEmail(currentPage, pageSize, email);
     }
 
     @GetMapping("/query/cond")
     public Result<?> queryCond(@RequestParam(defaultValue = "1") Integer currentPage,
-                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "-1") Integer pageSize,
                                @RequestParam(defaultValue = "") Integer cond) {
         return service.queryCond(currentPage, pageSize, cond);
     }
 
     @GetMapping("/query/room")
     public Result<?> queryRoom(@RequestParam(defaultValue = "1") Integer currentPage,
-                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "-1") Integer pageSize,
                                @RequestParam(defaultValue = "") Integer room) {
         return service.queryRoom(currentPage, pageSize, room);
     }
 
     @GetMapping("/query/inTime")
     public Result<?> queryInTime(@RequestParam(defaultValue = "1") Integer currentPage,
-                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 @RequestParam(defaultValue = "-1") Integer pageSize,
                                  @RequestParam(defaultValue = "") Date inTime) {
         return service.queryInTime(currentPage, pageSize, inTime);
     }
 
     @GetMapping("/query/outTime")
     public Result<?> queryOutTime(@RequestParam(defaultValue = "1") Integer currentPage,
-                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                  @RequestParam(defaultValue = "-1") Integer pageSize,
                                   @RequestParam(defaultValue = "") Date outTime) {
         return service.queryOutTime(currentPage, pageSize, outTime);
+    }
+
+    @PostMapping("/login")
+    public Result<?> login(@RequestParam(defaultValue = "") String username,
+                           @RequestParam(defaultValue = "") String password) {
+        return service.login(username, password);
+    }
+
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user) {
+        return service.register(user);
     }
 }

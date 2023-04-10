@@ -25,8 +25,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Result getAll() {
-        Page<User> userPage = mapper.selectPage(new Page<>(1, -1), Wrappers.<User>lambdaQuery().ne(User::getId, 0));
+    public Result getAll(Integer currentPage, Integer pageSize) {
+        Page<User> userPage = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().ne(User::getId, 0));
         return Result.succes(userPage);
     }
 
@@ -51,6 +51,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 用于管理员添加用户信息
+     * @param user
+     * @return
+     */
     @Override
     public Result insert(User user) {
         User user1 = mapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
@@ -63,20 +68,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Result deleteByID(Integer id) {
-        User user1 = mapper.selectById(id);
-        if (user1 == null) {
-            return Result.error("-1", "用户ID不存在");
-        } else {
-            mapper.deleteById(id);
-            return Result.succes("删除成功");
-        }
+    public Result queryID(Integer currentPage, Integer pageSize, Integer id) {
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getId, id));
+        return Result.succes(page);
     }
 
     @Override
-    public Result queryID(Integer id) {
-        Page<User> page = mapper.selectPage(new Page<>(1, -1), Wrappers.<User>lambdaQuery().eq(User::getId, id));
-        return Result.succes(page);
+    public Result deleteByID(User user) {
+        User user1 = mapper.selectById(user.getId());
+        if (user1 == null) {
+            return Result.error("-1", "用户ID不存在");
+        } else {
+            mapper.deleteById(user.getId());
+            return Result.succes("用户删除成功");
+        }
     }
 
     @Override
@@ -93,13 +98,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result queryPhone(Integer currentPage, Integer pageSize, String keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getPhone, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getPhone, keyWord));
         return Result.succes(page);
     }
 
     @Override
     public Result queryEmail(Integer currentPage, Integer pageSize, String keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getEmail, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getEmail, keyWord));
         return Result.succes(page);
     }
 
@@ -111,19 +116,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result queryRoom(Integer currentPage, Integer pageSize, Integer keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getRoom, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getRoom, keyWord));
         return Result.succes(page);
     }
 
     @Override
     public Result queryInTime(Integer currentPage, Integer pageSize, Date keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getInTime, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getInTime, keyWord));
         return Result.succes(page);
     }
 
     @Override
     public Result queryOutTime(Integer currentPage, Integer pageSize, Date keyWord) {
-        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().eq(User::getOutTime, keyWord));
+        Page<User> page = mapper.selectPage(new Page<>(currentPage, pageSize), Wrappers.<User>lambdaQuery().like(User::getOutTime, keyWord));
         return Result.succes(page);
+    }
+
+    @Override
+    public Result login(String username, String password) {
+        User user = mapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        if (user == null) {
+            return Result.error("-1", "用户名或密码错误");
+        } else {
+            if (user.getPassword().equals(password)) {
+                return Result.succes("登录成功", getNewUserByID(user));
+            } else {
+                return Result.error("-1", "用户名或密码错误");
+            }
+        }
+    }
+
+
+    /**
+     * 用于用户注册
+     * @param user
+     * @return
+     */
+    @Override
+    public Result register(User user) {
+        User user1 = mapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        if (user1 != null) {
+            return Result.error("-1", "注册失败 用户名已存在");
+        } else {
+            mapper.insert(user);
+            return Result.succes("注册成功");
+        }
     }
 }

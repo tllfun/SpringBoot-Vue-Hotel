@@ -9,8 +9,13 @@ import java.util.Date;
 
 public interface RoomService extends IService<Room> {
     Result getAll(Integer currentPage, Integer pageSize);
+    Result insertRoom(Room room);
+    Result updateRoom(Room room);
+    Result deleteRoom(Room room);
     Result queryAllAvailable(Integer currentPage, Integer pageSize);
-    Result queryRoom(Integer roomID);
-    Result queryType(Integer currentPage, Integer pageSize);
-    Result queryFloor(Integer currentPage, Integer pageSize);
+    Result queryID(Integer currentPage, Integer pageSize, Integer id);
+    Result queryRoom(Integer currentPage, Integer pageSize, Integer roomID);
+    Result queryType(Integer currentPage, Integer pageSize, Integer type);
+    Result queryFloor(Integer currentPage, Integer pageSize, Integer floor);
+    Result queryAll(Integer currentPage, Integer pageSize, Integer type, Integer keyWord);
 }
