@@ -17,7 +17,7 @@
         </template>
       </el-input>
     </div>
-    <el-table :data="house" style="width: 100%;height: 93%">
+    <el-table :data="house" style="width: 100%;height: 90%">
       <el-table-column fixed prop="id" label="id" width="120" align="center"/>
       <el-table-column prop="room" label="room" width="120" align="center"/>
       <el-table-column prop="type" label="type" width="120" align="center"/>
@@ -36,7 +36,7 @@
               icon="InfoFilled"
               icon-color="#626AEF"
               title="Are you sure to delete this?"
-              @confirm="handleDelete(scope.row.id)"
+              @confirm="handleDelete(scope.row)"
               @cancel="cancelEvent"
           >
             <template #reference>
@@ -82,9 +82,9 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="handleEdit">
-          Confirm
+          修改
         </el-button>
       </span>
     </template>
@@ -146,27 +146,31 @@ export default {
     const handleSearch = () =>{
       house.value = [];
       // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-      axios.get("/room/query/all",{
-        params:{
-          type:select.value.region,
-          keyWord:input1.value
-        }
-      }).then((response)=>{
-        const data=response.data;
-        console.log(data);
-        house.value = data.data.records;
-      });
+      if(input1.value == null || input1.value === ''){
+        handleQuery();
+      } else {
+        axios.get("/room/query/all",{
+          params:{
+            type:select.value.region,
+            keyWord:input1.value
+          }
+        }).then((response)=>{
+          const data=response.data;
+          console.log(data);
+          house.value = data.data.records;
+        });
+      }
     }
 
 
 
     const msg = ref();
-    const handleDelete = (id) =>{
-      console.log(id);
-      axios.delete("/room/delete/"+id).then((response)=>{
+    const handleDelete = (roomData) =>{
+      console.log(roomData);
+      axios.delete("/room/delete", {data:roomData}).then((response)=>{
         const data=response.data;//data = CommonResp
-        msg.value = data.msg;
-        if(msg.value === "删除成功"){
+        msg.value = data.code;
+        if(msg.value === '0'){
           //重新加载列表
           handleQuery();
           openMsg();
@@ -191,16 +195,26 @@ export default {
     const msg1 = ref();
     const handleEdit = () => {
         console.log(form);
-        axios.post("/room/save",form).then((response)=>{
+        axios.put("/room/update",form).then((response)=>{
           const data=response.data;//data = CommonResp
-          msg1.value = data.msg;
-          if(msg1.value === "成功"){
+          msg1.value = data.code;
+          if(msg1.value === '0'){
             //重新加载列表
             handleQuery();
+            Msg();
             dialogFormVisible.value = false;
           }
         });
     };
+    /**
+     * 修改时显示修改成功
+     */
+    const Msg = () => {
+      ElMessage({
+        message: '修改成功',
+        type: 'success',
+      })
+    }
 
     onMounted(()=>{
       handleQuery();
@@ -213,6 +227,7 @@ export default {
       openMsg,
       handleSearch,
       handleEdit,
+      Msg,
 
       form,
 
