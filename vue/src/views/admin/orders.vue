@@ -63,13 +63,37 @@
         <el-input v-model="form.room" autocomplete="off" />
       </el-form-item>
       <el-form-item label="inTime" :label-width="formLabelWidth" prop="inTime">
-        <el-input v-model="form.inTime" autocomplete="off" />
+<!--        <el-input v-model="form.inTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="form.inTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="outTime" :label-width="formLabelWidth" prop="outTime">
-        <el-input v-model="form.outTime" autocomplete="off" />
+<!--        <el-input v-model="form.outTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="form.outTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="updateTime" :label-width="formLabelWidth" prop="updateTime">
-        <el-input v-model="form.updateTime" autocomplete="off" />
+<!--        <el-input v-model="form.updateTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="form.updateTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="comments" :label-width="formLabelWidth" prop="comments">
         <el-input v-model="form.comments" autocomplete="off" />
@@ -87,9 +111,9 @@
 
   <el-dialog v-model="AddFormVisible" title="订单添加">
     <el-form :model="addForm" ref="formRef">
-      <el-form-item label="id" :label-width="formLabelWidth" prop="id">
-        <el-input v-model="addForm.id" autocomplete="off" />
-      </el-form-item>
+<!--      <el-form-item label="id" :label-width="formLabelWidth" prop="id">-->
+<!--        <el-input v-model="addForm.id" autocomplete="off" />-->
+<!--      </el-form-item>-->
       <el-form-item label="userId" :label-width="formLabelWidth" prop="userId">
         <el-input v-model="addForm.userId" autocomplete="off" />
       </el-form-item>
@@ -100,13 +124,37 @@
         <el-input v-model="addForm.room" autocomplete="off" />
       </el-form-item>
       <el-form-item label="inTime" :label-width="formLabelWidth" prop="inTime">
-        <el-input v-model="addForm.inTime" autocomplete="off" />
+<!--        <el-input v-model="addForm.inTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="addForm.inTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="outTime" :label-width="formLabelWidth" prop="outTime">
-        <el-input v-model="addForm.outTime" autocomplete="off" />
+<!--        <el-input v-model="addForm.outTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="addForm.outTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="updateTime" :label-width="formLabelWidth" prop="updateTime">
-        <el-input v-model="addForm.updateTime" autocomplete="off" />
+<!--        <el-input v-model="addForm.updateTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="addForm.updateTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="comments" :label-width="formLabelWidth" prop="comments">
         <el-input v-model="addForm.comments" autocomplete="off" />
@@ -323,6 +371,7 @@ export default {
     const formRef = ref('');
     const addMsg = ref();
     const handleAdd = (formRef) => {
+      console.log(addForm);
       axios.post("/orders/insert", addForm).then((response)=>{
         const data=response.data;//data = CommonResp
         addMsg.value = data.code;

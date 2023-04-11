@@ -77,10 +77,26 @@
         <el-input v-model="form.room" autocomplete="off" />
       </el-form-item>
       <el-form-item label="inTime" :label-width="formLabelWidth" prop="inTime">
-        <el-input v-model="form.inTime" autocomplete="off" />
+<!--        <el-input v-model="form.inTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="form.inTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="outTime" :label-width="formLabelWidth" prop="outTime">
-        <el-input v-model="form.outTime" autocomplete="off" />
+<!--        <el-input v-model="form.outTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="form.outTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -93,11 +109,11 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="AddFormVisible" title="用户添加">
+  <el-dialog v-model="AddFormVisible" title="用户添加"  >
     <el-form :model="addForm" ref="formRef">
-      <el-form-item label="id" :label-width="formLabelWidth" prop="id">
-        <el-input v-model="addForm.id" autocomplete="off" />
-      </el-form-item>
+<!--      <el-form-item label="id" :label-width="formLabelWidth" prop="id">-->
+<!--        <el-input v-model="addForm.id" autocomplete="off" />-->
+<!--      </el-form-item>-->
       <el-form-item label="username" :label-width="formLabelWidth" prop="username">
         <el-input v-model="addForm.username" autocomplete="off" />
       </el-form-item>
@@ -120,10 +136,26 @@
         <el-input v-model="addForm.room" autocomplete="off" />
       </el-form-item>
       <el-form-item label="inTime" :label-width="formLabelWidth" prop="inTime">
-        <el-input v-model="addForm.inTime" autocomplete="off" />
+<!--        <el-input v-model="addForm.inTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="addForm.inTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
       <el-form-item label="outTime" :label-width="formLabelWidth" prop="outTime">
-        <el-input v-model="addForm.outTime" autocomplete="off" />
+<!--        <el-input v-model="addForm.outTime" autocomplete="off" />-->
+        <el-date-picker
+            v-model="addForm.outTime"
+            type="date"
+            placeholder="请选择日期"
+            size="default"
+            format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
