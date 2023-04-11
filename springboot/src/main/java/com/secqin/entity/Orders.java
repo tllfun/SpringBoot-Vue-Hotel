@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @TableName("orders")
 @Data
@@ -28,20 +29,21 @@ public class Orders {
      * 入住时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime inTime;
+    private Date inTime;
+
 
     /**
      * 退房时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime outTime;
+    private Date outTime;
 
     /**
      * 修改订单的时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime updateTime;
+    private Date updateTime;
     /**
      * 备注
      */
