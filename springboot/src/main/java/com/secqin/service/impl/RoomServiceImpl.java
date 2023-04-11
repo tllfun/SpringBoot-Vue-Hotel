@@ -64,12 +64,17 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public Result insertRoom(Room room) {
-        Room room1 = mapper.selectOne(Wrappers.<Room>lambdaQuery().eq(Room::getRoom, room.getRoom()));
-        if (room1 != null) {
-            return Result.error("-1", "新增房间号失败，原因:房间号已经存在");
+        if (room.getId() != null) {
+            return Result.error("-1", "新增房间失败，原因：ID不能自定义");
         } else {
-            mapper.insert(room);
-            return Result.succes("新增房间成功", this.getNewRoomByRoom(room));
+
+            Room room1 = mapper.selectOne(Wrappers.<Room>lambdaQuery().eq(Room::getRoom, room.getRoom()));
+            if (room1 != null) {
+                return Result.error("-1", "新增房间号失败，原因:房间号已经存在");
+            } else {
+                mapper.insert(room);
+                return Result.succes("新增房间成功", this.getNewRoomByRoom(room));
+            }
         }
     }
 

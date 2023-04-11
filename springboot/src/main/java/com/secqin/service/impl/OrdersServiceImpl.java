@@ -42,8 +42,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
     @Override
     public Result insert(Orders orders) {
-        mapper.insert(orders);
-        return Result.succes("订单添加成功", this.getNewUserByID(orders));
+        if (orders.getId() != null) {
+            return Result.error("-1", "订单添加失败，原因：ID不能自定义");
+        } else {
+            mapper.insert(orders);
+            return Result.succes("订单添加成功", this.getNewUserByID(orders));
+        }
     }
 
     @Override

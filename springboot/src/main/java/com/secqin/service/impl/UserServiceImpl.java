@@ -58,12 +58,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public Result insert(User user) {
-        User user1 = mapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
-        if (user1 != null) {
-            return Result.error("-1", "用户昵称已经存在");
+        if (user.getId() != null) {
+            return Result.error("-1", "新增用户失败，原因：ID不能自定义");
         } else {
-            mapper.insert(user);
-            return Result.succes(getNewUserByName(user.getUsername()));
+            User user1 = mapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+            if (user1 != null) {
+                return Result.error("-1", "用户昵称已经存在");
+            } else {
+                mapper.insert(user);
+                return Result.succes(getNewUserByName(user.getUsername()));
+            }
         }
     }
 
