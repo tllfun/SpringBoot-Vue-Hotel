@@ -187,7 +187,7 @@ export default {
   },
 
   setup(){
-    const form = reactive({
+      const form = reactive({
       id:'',
       userId:'',
       managerId:'',
